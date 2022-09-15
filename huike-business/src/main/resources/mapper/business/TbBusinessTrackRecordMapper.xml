@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huike.business.mapper.TbBusinessTrackRecordMapper">
+
+    <resultMap type="TbBusinessTrackRecord" id="TbBusinessTrackRecordResult">
+        <result property="id" column="id"/>
+        <result property="businessId" column="business_id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="keyItems" column="key_items"/>
+        <result property="record" column="record"/>
+        <result property="createTime" column="create_time"/>
+        <result property="trackStatus" column="track_status"/>
+        <result property="nextTime" column="next_time"/>
+    </resultMap>
+    <insert id="insert">
+        insert into tb_business_track_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="businessId != null">business_id,</if>
+            <if test="nextTime != null">next_time,</if>
+            <if test="keyItems!= null">key_items,</if>
+            <if test="trackStatus!= null">track_status,</if>
+            <if test="record != null">record,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="businessId != null">#{businessId},</if>
+            <if test="nextTime != null">#{nextTime},</if>
+            <if test="keyItems != null">#{keyItems},</if>
+            <if test="trackStatus != null">#{trackStatus},</if>
+            <if test="record != null">#{record},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+    <select id="selectTbBusinessById" resultMap="TbBusinessTrackRecordResult">
+        select id, business_id,create_by,  key_items, record,   create_time,track_status,next_time
+        from tb_business_track_record
+        where  business_id=#{businessId}
+    </select>
+
+
+</mapper>

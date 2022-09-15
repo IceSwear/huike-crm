@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huike.review.mapper.MybatisReviewMapper">
+    <resultMap id="ResultMap" type="com.huike.review.domain.Review">
+        <!--
+                id：完成主键字段的映射
+                    column：表的列名
+                    property：实体类的属性名
+                result：完成一般字段的映射
+                    column：表的列名
+                    property：实体类的属性名
+            -->
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="sex" property="sex"/>
+    </resultMap>
+
+
+    <insert id="addone"  parameterType="int" keyProperty="id" keyColumn="id" >
+      insert into  mybatis_review (
+        <if test="name != null and name != '' ">name,</if>
+        <if test="sex != null and sex != '' ">sex,</if>
+        <if test="age != null and age != '' ">age</if>
+        )values(
+        <if test="name != null and name != '' ">#{name},</if>
+        <if test="sex != null and sex != '' ">#{sex},</if>
+        <if test="age != null and age != '' ">#{age}</if>
+        )
+    </insert>
+    <update id="update" parameterType="int">
+        update mybatis_review
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex = #{sex},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+        </set>
+        where id = #{id};
+    </update>
+    <delete id="delete" parameterType="int">
+        delete from mybatis_review where id = #{id};
+    </delete>
+    <select id="getbyid" resultMap="ResultMap">
+      select *
+    from mybatis_review
+    where id= #{id}
+    </select>
+    <sql id="selectreview">
+        select id, name, phone, sex, age from tb_clue
+    </sql>
+    <select id="getbypage"  parameterType="Review" resultMap="ResultMap">
+        <include refid="selectreview"/>
+        <where>
+            <if test="id != null  and id != ''"> and id = #{id}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="age != null "> and age = #{age}</if>
+        </where>
+    </select>
+
+</mapper>
